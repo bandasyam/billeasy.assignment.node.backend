@@ -36,8 +36,12 @@ const getBookQuery = joi.object({
   genre: joi.string().allow(null),
 });
 
+const bookQuery = joi.object({
+  page: joi.number().positive().default(1),
+});
+
 const searchQuery = joi.object({
   query: joi.string().lowercase().required(),
 });
 
-module.exports = { createBookSchema, reviewBookSchema, updateReviewSchema, bookParamsValidate, getBookQuery, searchQuery };
+module.exports = { createBookSchema, reviewBookSchema, updateReviewSchema, bookParamsValidate, getBookQuery, bookQuery, searchQuery };

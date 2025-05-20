@@ -12,6 +12,9 @@ router.post("/", decodeToken, decodeUser, bodyValidator(schema.createBookSchema)
 /** get books */
 router.get("/", queryValidator(schema.getBookQuery), controller.getBooks);
 
+/** get a book */
+router.get("/:id", paramsValidator(schema.bookParamsValidate), queryValidator(schema.bookQuery), controller.getBook);
+
 /** search books */
 router.get("/search", queryValidator(schema.searchQuery), controller.searchBook);
 

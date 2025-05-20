@@ -59,6 +59,42 @@ async function getBooks(req, res, next) {
   }
 }
 
+async function getBook(req, res, next) {
+  try {
+    let bookId = req.params.id;
+
+    let page = parseInt(req.query.page) || 1;
+    let limit = 10;
+    let skip = (page - 1) * limit;
+
+    let book = await db.aggregate("books", [
+      {
+        $match: { _id: bookId },
+      },
+      {
+        $lookup: {
+          from: "usersreviews",
+          localField: "_id",
+          foreignField: "bookId",
+          pipeline: [
+            {
+              $skip: skip,
+            },
+            {
+              $limit: limit,
+            },
+          ],
+          as: "userReviews",
+        },
+      },
+    ]);
+
+    res.status(200).send(book);
+  } catch (e) {
+    next(e);
+  }
+}
+
 async function searchBook(req, res, next) {
   try {
     let query = req.query.query;
@@ -144,4 +180,4 @@ async function writeReview(req, res, next) {
   }
 }
 
-module.exports = { createBook, getBooks, searchBook, writeReview };
+module.exports = { createBook, getBooks, getBook, searchBook, writeReview };

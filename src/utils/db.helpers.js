@@ -8,4 +8,12 @@ async function findOne(collectionName, query) {
   }
 }
 
-module.exports = { findOne };
+async function createOne(collectionName, data) {
+  try {
+    return await db.collection(collectionName).insertOne(data);
+  } catch (e) {
+    throw e;
+  }
+}
+
+module.exports = { findOne, createOne };

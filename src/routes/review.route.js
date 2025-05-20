@@ -17,6 +17,6 @@ router.put(
 );
 
 /** delete review */
-// router.delete("/:id", decodeToken, decodeUser, paramsValidator(schema.bookParamsValidate), controller.getBooks);
+router.delete("/:id", decodeToken, decodeUser, paramsValidator(schema.bookParamsValidate), controller.deleteReview);
 
 module.exports = router;

@@ -18,7 +18,7 @@ async function updateReview(req, res, next) {
 
     // check if user has permission to edit this review
     if (userReview.userId.toString() != user._id.toString()) {
-      return next(createResponse("You don't have permission to edit this book", 403));
+      return next(createResponse("You don't have permission to edit this review", 403));
     }
 
     let dataToUpdate = {};
@@ -83,4 +83,67 @@ async function updateReview(req, res, next) {
   }
 }
 
-module.exports = { updateReview };
+async function deleteReview(req, res, next) {
+  const session = client.startSession();
+  try {
+    session.startTransaction(transactionOptions);
+
+    const reviewId = req.params.id;
+    const user = req.user;
+
+    // check if user has given review
+    let userReview = await db.findOneWithSession("usersreviews", { _id: reviewId }, session);
+    if (!userReview) {
+      return next(createResponse("No user review found with the given id", 409));
+    }
+
+    // check if user has permission to edit this review
+    if (userReview.userId.toString() != user._id.toString()) {
+      return next(createResponse("You don't have permission to delete this review", 403));
+    }
+
+    // delete user review
+    let deleteUserReview = await db.deleteOneWithSession("usersreviews", { _id: reviewId }, session);
+    if (!deleteUserReview) {
+      throw new Error("couldn't delete user reviews");
+    }
+
+    let book = await db.findOneWithSession("books", { _id: userReview.bookId }, session);
+
+    const oldRating = deleteUserReview.rating;
+    const newRatingCount = book.count - 1;
+
+    // Recalculate avgRating
+    let newAvgRating = 0;
+    if (newRatingCount > 0) {
+      const totalRating = book.rating * book.count;
+      const newTotalRating = totalRating - oldRating;
+      newAvgRating = newTotalRating / newRatingCount;
+      newAvgRating = Number(parseFloat(newAvgRating).toFixed(1));
+    }
+
+    // Persist the updated review and avgRating
+    let updateResult = await db.updateOneWithSession("books", { _id: userReview.bookId }, { $set: { rating: newAvgRating, count: newRatingCount } });
+    if (!updateResult) {
+      throw new Error("couldn't update book rating");
+    }
+
+    try {
+      await session.commitTransaction();
+
+      let updatedBook = await db.findOne("books", { _id: userReview.bookId });
+      res.status(200).send(updatedBook);
+    } catch (cte) {
+      console.log(`commit transaction error`, cte);
+      throw cte;
+    }
+  } catch (e) {
+    console.log(e);
+    await session.abortTransaction();
+    next(createResponse(e?.message));
+  } finally {
+    await session.endSession();
+  }
+}
+
+module.exports = { updateReview, deleteReview };

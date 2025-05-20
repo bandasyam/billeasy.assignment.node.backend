@@ -40,6 +40,14 @@ async function updateOneWithSession(collectionName, findQuery, updateQuery, sess
   }
 }
 
+async function deleteOneWithSession(collectionName, findQuery, session) {
+  try {
+    return await db.collection(collectionName).findOneAndDelete(findQuery, { session });
+  } catch (e) {
+    throw e;
+  }
+}
+
 async function aggregate(collectionName, aggregate) {
   try {
     return await db.collection(collectionName).aggregate(aggregate).toArray();
@@ -48,4 +56,4 @@ async function aggregate(collectionName, aggregate) {
   }
 }
 
-module.exports = { findOne, findOneWithSession, createOne, createOneWithSession, updateOneWithSession, aggregate };
+module.exports = { findOne, findOneWithSession, createOne, createOneWithSession, updateOneWithSession, deleteOneWithSession, aggregate };

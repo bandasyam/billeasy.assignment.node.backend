@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { bodyValidator } = require("../middlewares/joi.middleware");
-const schema = require("../bodyschemas/auth.bodyschema");
+const schema = require("../payloadschemas/auth.payloadschema");
 const controller = require("../controllers/auth.controller");
 
 /** signup api */

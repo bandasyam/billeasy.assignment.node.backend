@@ -24,33 +24,38 @@ async function createBook(req, res, next) {
   }
 }
 
-async function login(req, res, next) {
+async function getBooks(req, res, next) {
   try {
-    const { email, password } = req.body;
+    let page = parseInt(req.query.page) || 1;
+    let limit = 10;
+    let skip = (page - 1) * limit;
 
-    // check if email exists
-    let user = await db.findOne("users", { email: email });
-    if (!user) {
-      return next(createResponse("email not found", 404));
+    let matchQuery = {};
+    if (req.query?.author) {
+      matchQuery["author"] = { $regex: req.query?.author, $options: "i" };
     }
 
-    // check if password is correct
-    let validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) {
-      return next(createResponse("Incorrect password", 400));
+    if (req.query?.genre) {
+      matchQuery["genre"] = { $in: req.query?.genre.split(",") };
     }
 
-    // remove password from user response for security concerns
-    delete user.password;
+    let aggregation = [
+      {
+        $match: matchQuery,
+      },
+      {
+        $skip: skip,
+      },
+      {
+        $limit: limit,
+      },
+    ];
 
-    // send response
-    res
-      .header("token", createToken({ _id: user._id }, 60 * 60 * 7))
-      .status(200)
-      .send(user);
+    let result = await db.aggregate("books", aggregation);
+    res.status(200).send(result);
   } catch (e) {
-    next(e?.message);
+    next(createResponse(e.message));
   }
 }
 
-module.exports = { createBook, login };
+module.exports = { createBook, getBooks };

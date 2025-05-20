@@ -2,11 +2,14 @@ const express = require("express");
 const router = express.Router();
 const { decodeToken } = require("../middlewares/authentication.middleware");
 const { decodeUser } = require("../middlewares/user.middleware");
-const { bodyValidator } = require("../middlewares/joi.middleware");
+const { bodyValidator, queryValidator } = require("../middlewares/joi.middleware");
 const schema = require("../payloadschemas/book.payloadschema");
 const controller = require("../controllers/books.controller");
 
 /** add a new book */
-router.post("/books", decodeToken, decodeUser, bodyValidator(schema.createBookSchema), controller.createBook);
+router.post("/", decodeToken, decodeUser, bodyValidator(schema.createBookSchema), controller.createBook);
+
+/** get books */
+router.get("/", queryValidator(schema.getBookQuery), controller.getBooks);
 
 module.exports = router;

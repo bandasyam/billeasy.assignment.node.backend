@@ -16,4 +16,12 @@ async function createOne(collectionName, data) {
   }
 }
 
-module.exports = { findOne, createOne };
+async function aggregate(collectionName, aggregate) {
+  try {
+    return await db.collection(collectionName).aggregate(aggregate).toArray();
+  } catch (e) {
+    throw e;
+  }
+}
+
+module.exports = { findOne, createOne, aggregate };

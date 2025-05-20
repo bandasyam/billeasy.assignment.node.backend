@@ -1,10 +1,27 @@
 const joi = require("joi");
+const { ObjectId } = require("mongodb");
+
+const createObject = (value, helpers) => {
+  return new ObjectId(value);
+};
 
 /** body validators */
 const createBookSchema = joi.object({
   author: joi.string().lowercase().required(),
   title: joi.string().lowercase().required(),
   genre: joi.array().items(joi.string()).required(),
+  rating: joi.number().default(0).allow(0),
+  count: joi.number().default(0).allow(0),
+});
+
+const reviewBookSchema = joi.object({
+  rating: joi.number().positive().max(5).required(),
+  review: joi.string().required(),
+});
+
+/** params validator */
+const bookParamsValidate = joi.object({
+  id: joi.string().hex().length(24).custom(createObject).required(),
 });
 
 /** query validator */
@@ -18,4 +35,4 @@ const searchQuery = joi.object({
   query: joi.string().lowercase().required(),
 });
 
-module.exports = { createBookSchema, getBookQuery, searchQuery };
+module.exports = { createBookSchema, reviewBookSchema, bookParamsValidate, getBookQuery, searchQuery };

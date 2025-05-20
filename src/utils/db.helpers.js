@@ -8,9 +8,33 @@ async function findOne(collectionName, query) {
   }
 }
 
+async function findOneWithSession(collectionName, query, session) {
+  try {
+    return await db.collection(collectionName).findOne(query, { session });
+  } catch (e) {
+    throw e;
+  }
+}
+
 async function createOne(collectionName, data) {
   try {
     return await db.collection(collectionName).insertOne(data);
+  } catch (e) {
+    throw e;
+  }
+}
+
+async function createOneWithSession(collectionName, query, session) {
+  try {
+    return await db.collection(collectionName).insertOne(query, { session });
+  } catch (e) {
+    throw e;
+  }
+}
+
+async function updateOneWithSession(collectionName, findQuery, updateQuery, session) {
+  try {
+    return await db.collection(collectionName).findOneAndUpdate(findQuery, updateQuery, { session, returnDocument: "after" });
   } catch (e) {
     throw e;
   }
@@ -24,4 +48,4 @@ async function aggregate(collectionName, aggregate) {
   }
 }
 
-module.exports = { findOne, createOne, aggregate };
+module.exports = { findOne, findOneWithSession, createOne, createOneWithSession, updateOneWithSession, aggregate };

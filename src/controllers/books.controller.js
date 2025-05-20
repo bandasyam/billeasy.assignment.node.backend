@@ -58,4 +58,21 @@ async function getBooks(req, res, next) {
   }
 }
 
-module.exports = { createBook, getBooks };
+async function searchBook(req, res, next) {
+  try {
+    let query = req.query.query;
+    const books = await db.aggregate("books", [
+      {
+        $match: {
+          $or: [{ title: { $regex: query, $options: "i" } }, { author: { $regex: query, $options: "i" } }],
+        },
+      },
+    ]);
+
+    res.status(200).send(books);
+  } catch (e) {
+    next(createResponse(e.message));
+  }
+}
+
+module.exports = { createBook, getBooks, searchBook };

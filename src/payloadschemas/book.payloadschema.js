@@ -14,4 +14,8 @@ const getBookQuery = joi.object({
   genre: joi.string().allow(null),
 });
 
-module.exports = { createBookSchema, getBookQuery };
+const searchQuery = joi.object({
+  query: joi.string().lowercase().required(),
+});
+
+module.exports = { createBookSchema, getBookQuery, searchQuery };

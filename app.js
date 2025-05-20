@@ -21,7 +21,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
 const authRouter = require("./src/routes/auth.route");
-// const usersRouter = require("./src/routes/users");
+const booksRouter = require("./src/routes/books.route");
 
 const app = express();
 
@@ -48,7 +48,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api/auth", authRouter);
-// app.use("/users", usersRouter);
+app.use("/api/books", booksRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

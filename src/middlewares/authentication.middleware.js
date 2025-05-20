@@ -13,7 +13,7 @@ module.exports.decodeToken = (req, res, next) => {
       return next(createResponse("No token found", 401));
     }
 
-    let decoded = jwt.verify(token, process.env.JWT_SECRET);
+    let decoded = jwt.verify(token.split("Bearer ")[1], process.env.JWT_SECRET);
     req.payload = decoded;
 
     next();

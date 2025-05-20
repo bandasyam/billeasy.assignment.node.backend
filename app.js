@@ -22,6 +22,7 @@ const logger = require("morgan");
 
 const authRouter = require("./src/routes/auth.route");
 const booksRouter = require("./src/routes/books.route");
+const reviewsRouter = require("./src/routes/review.route");
 
 const app = express();
 
@@ -37,7 +38,7 @@ app.use((req, res, next) => {
   if (serverInitialized) {
     next();
   } else {
-    next(createHttpError(503, "Server not initialized yet"));
+    next(createResponse("Server not initialized yet", 503));
   }
 });
 
@@ -49,6 +50,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api/auth", authRouter);
 app.use("/api/books", booksRouter);
+app.use("/api/reviews", reviewsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

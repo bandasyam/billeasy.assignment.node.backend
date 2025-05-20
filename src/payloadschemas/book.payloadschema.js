@@ -19,6 +19,11 @@ const reviewBookSchema = joi.object({
   review: joi.string().required(),
 });
 
+const updateReviewSchema = joi.object({
+  rating: joi.number().positive().max(5),
+  review: joi.string(),
+});
+
 /** params validator */
 const bookParamsValidate = joi.object({
   id: joi.string().hex().length(24).custom(createObject).required(),
@@ -35,4 +40,4 @@ const searchQuery = joi.object({
   query: joi.string().lowercase().required(),
 });
 
-module.exports = { createBookSchema, reviewBookSchema, bookParamsValidate, getBookQuery, searchQuery };
+module.exports = { createBookSchema, reviewBookSchema, updateReviewSchema, bookParamsValidate, getBookQuery, searchQuery };

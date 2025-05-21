@@ -3,13 +3,13 @@
 1. Clone the repository
 2. Install all the node-modules using the command `npm i`
 3. All the secrets are kept in .env file (For the sake of assignment commiting the .env file)
+4. To start the project use the command `npm start`
 
 > **Note:** MongoDB must be installed locally **with replica set configuration enabled** to support sessions (including **multi-document transactions**).  
 > Alternatively, you can use **MongoDB Atlas** or any cloud-hosted MongoDB instance by providing the appropriate connection URI.
 
 ## POST COLLECTION LINK
-[Link Text](https://www.postman.com/supply-architect-93224319/workspace/public-collection-bandasyam/collection/37333128-de6dfcb0-a688-4fbd-8f10-f0872c199000?action=share&creator=37333128
-)
+<a href="https://www.postman.com/supply-architect-93224319/workspace/public-collection-bandasyam/collection/37333128-de6dfcb0-a688-4fbd-8f10-f0872c199000?action=share&creator=37333128"  target="_blank">Bill Assignment Easy Postman collection</a>
 
 ## 📘 MONGODB SCHEMAS
 

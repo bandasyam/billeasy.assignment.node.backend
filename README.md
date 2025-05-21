@@ -7,6 +7,10 @@
 > **Note:** MongoDB must be installed locally **with replica set configuration enabled** to support sessions (including **multi-document transactions**).  
 > Alternatively, you can use **MongoDB Atlas** or any cloud-hosted MongoDB instance by providing the appropriate connection URI.
 
+## POST COLLECTION LINK
+[Link Text](https://www.postman.com/supply-architect-93224319/workspace/public-collection-bandasyam/collection/37333128-de6dfcb0-a688-4fbd-8f10-f0872c199000?action=share&creator=37333128
+)
+
 ## 📘 MONGODB SCHEMAS
 
 ### 🧑‍💻 Users Collection

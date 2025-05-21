@@ -9,7 +9,7 @@
 > Alternatively, you can use **MongoDB Atlas** or any cloud-hosted MongoDB instance by providing the appropriate connection URI.
 
 ## POST COLLECTION LINK
-<a href="https://www.postman.com/supply-architect-93224319/workspace/public-collection-bandasyam/collection/37333128-de6dfcb0-a688-4fbd-8f10-f0872c199000?action=share&creator=37333128"  target="_blank">Bill Assignment Easy Postman collection</a>
+<a href="https://www.postman.com/supply-architect-93224319/workspace/public-collection-bandasyam/collection/37333128-de6dfcb0-a688-4fbd-8f10-f0872c199000?action=share&creator=37333128"  target="_blank">Billeast Assignment Postman collection</a>
 
 ## 📘 MONGODB SCHEMAS
 
